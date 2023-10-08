@@ -1,25 +1,17 @@
 import React, {useState, useEffect} from 'react'
-import { Box, FormGroup, FormControl, TextField, FormLabel, Button } from '@mui/material'
-import CheckBoxStations from './CheckBoxStations'
+import { Box, FormGroup, FormControl, TextField, Button } from '@mui/material'
 import { onSnapshot, collection } from 'firebase/firestore'
 import { db } from '../../init_firebase/firebase'
 
 const NewSequence = (props) => {
 
   const [nameSequence, setNameSequence] = useState("")
-  const [stations, setStations] = useState([])
-  const [objectStation, setObjectStation] = useState({})
-
   const{AddSequence} = props;
-
-  const SendObject = (object) => {
-    setObjectStation(object);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log("nueva secuencia")
-    AddSequence(nameSequence, objectStation)
+    AddSequence(nameSequence)
   }
 
   useEffect(() => {
@@ -28,7 +20,7 @@ const NewSequence = (props) => {
       snapshot.forEach((doc) => {
         data.push({ ...doc.data(), id: doc.id });
       });
-      setStations(data);
+      //setStations(data);
     });
     return () => {
       unSuscribed();
@@ -49,18 +41,6 @@ const NewSequence = (props) => {
               value={nameSequence}
             />
           </FormControl>
-
-  
-          
-
-          {/* -------------------------------------------------------------------- */}
-          <Box sx={{ display: "flex" }}>
-            <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
-              <FormLabel component="legend">Estaciones Disponibles</FormLabel>
-              <CheckBoxStations SendObject={SendObject} stations= {stations}/>
-            </FormControl>
-          </Box>
-          {/* --------------------------------------------------------------------- */}
 
           <Button type="submit" variant="outlined" sx={{ marginTop: 2, color: "black", borderColor: "black" }}>
             ADD

@@ -8,8 +8,7 @@ import { addCRUD, deleteCRUD } from "../crud/Crud";
 import Button from "../interface/Button";
 import Container from "../interface/Container";
 
-
-const Stations = () => {
+const Stations = (props) => {
   const [newStation, setNewStation] = useState(false);
   const [stations, SetStations] = useState([]);
 
@@ -41,8 +40,6 @@ const Stations = () => {
     };
   }, []);
 
-
-
   return (
     <>
       <Stack direction="row" spacing={1}>
@@ -51,13 +48,15 @@ const Stations = () => {
             Estaciones:
           </Typography>
 
-          <Button execute={(x) => setNewStation(x)}>
-            Nueva Estacion
-          </Button>
+          <Button execute={(x) => setNewStation(x)}>Nueva Estacion</Button>
 
           <Box sx={{ padding: 1, borderColor: "black", margin: 1 }}>
             {stations.map((station) => (
-              <Station key={station.id} station={station} deleteStation={deleteStation}></Station>
+              <Station
+                key={station.id}
+                station={station}
+                deleteStation={deleteStation}
+              ></Station>
             ))}
           </Box>
         </Container>

@@ -6,6 +6,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  FormGroup,
 } from "@mui/material";
 import Container from "../interface/Container";
 import Button from "../interface/Button";
@@ -16,22 +17,18 @@ import { db } from "../../init_firebase/firebase";
 
 const Sequences = () => {
   const [newSequence, setNewSequence] = useState(false);
-  const [sequences, SetSequences] = useState([]);
+  const [sequences, setSequences] = useState([]);
+  const [stations, setStations] = useState([]);
+  const [sequence, setSequence] = useState("");
+  const [station, setStation] = useState("");
 
-  const AddSequence = (nameSequence, objectStation) => {
+  const AddSequence = (nameSequence) => {
     const modelObject = {
       name: nameSequence,
-      station: objectStation,
     };
     addCRUD(modelObject, "sequences");
     setNewSequence(false);
   };
-
-  const handleChange = (e) => {
-    e.preventDefault()
-    
-
-  }
 
   useEffect(() => {
     const unSuscribed = onSnapshot(collection(db, "sequences"), (snapshot) => {
@@ -40,10 +37,28 @@ const Sequences = () => {
         data.push({ ...doc.data(), id: doc.id });
       });
       console.log("Sequences:", data);
-      SetSequences(data);
+      setSequences(data);
     });
     return () => {
       unSuscribed();
+    };
+  }, []);
+
+  useEffect(() => {
+    const unSuscribedStation = onSnapshot(
+      collection(db, "stations"),
+      (snapshot) => {
+        const data = [];
+        snapshot.forEach((doc) => {
+          data.push({ ...doc.data(), id: doc.id });
+        });
+        console.log("Stations Available:", data);
+        setStations(data);
+      }
+    );
+
+    return () => {
+      unSuscribedStation();
     };
   }, []);
 
@@ -53,26 +68,50 @@ const Sequences = () => {
         <Container>
           <Typography sx={{ margin: 1, fontSize: 26 }}>Secuencias:</Typography>
           <Button execute={(x) => setNewSequence(x)}>NUEVA SECUENCIA</Button>
-          <Typography sx={{ margin: 1, fontSize: 22 }}>Simulacion:</Typography>
+          <Typography sx={{ margin: 1, fontSize: 18 }}>
+            Configurar Simulacion:
+          </Typography>
 
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Simulaciones</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={""}
-              label="Age"
-
-               onChange={handleChange}
-            >
-              {sequences.map((sequence) => (
-                <MenuItem key={sequence.id} value={sequence.id}>
-                  {sequence.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <FormGroup>
+            <FormControl sx={{ width: 230, margin: 1 }}>
+              <InputLabel id="demo-simple-select-label">
+                Simulaciones
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={sequence}
+                label="Sequence"
+                onChange={(e) => {
+                  setSequence(e.target.value);
+                }}
+              >
+                {sequences.map((sequence) => (
+                  <MenuItem key={sequence.id} value={sequence.id}>
+                    {sequence.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl sx={{ width: 230, margin: 1 }}>
+              <InputLabel id="demo-simple-select-label2">Estaciones</InputLabel>
+              <Select
+                labelId="demo-simple-select-label-2"
+                id="demo-simple-select-2"
+                value={station}
+                label="Stations"
+                onChange={(e) => setStation(e.target.value)}
+              >
+                {stations.map((station) => (
+                  <MenuItem key={station.id} value={station.id}>
+                    {station.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </FormGroup>
         </Container>
+
         {newSequence && <NewSequence AddSequence={AddSequence} />}
       </Stack>
     </>
