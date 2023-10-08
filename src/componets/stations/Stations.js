@@ -32,7 +32,6 @@ const Stations = (props) => {
       snapshot.forEach((doc) => {
         data.push({ ...doc.data(), id: doc.id });
       });
-      console.log("Stations:", data);
       SetStations(data);
     });
     return () => {
