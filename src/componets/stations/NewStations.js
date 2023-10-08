@@ -70,7 +70,6 @@ const NewStations = (props) => {
           <Box sx={{ display: "flex" }}>
             <FormControl sx={{ m: 3 }} component="fieldset" variant="standard">
               <FormLabel component="legend">Procesos Disponibles</FormLabel>
-
               <CheckBoxProcess
                 SendObject={SendObject}
                 processes={processes}
@@ -78,7 +77,6 @@ const NewStations = (props) => {
             </FormControl>
           </Box>
           {/* --------------------------------------------------------------------- */}
-
           <Button type="submit" variant="outlined" sx={{ marginTop: 2, color: "black", borderColor: "black" }}>
             ADD
           </Button>

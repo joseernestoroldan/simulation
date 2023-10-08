@@ -5,7 +5,7 @@ import { Box, Typography, Stack } from "@mui/material";
 import { db } from "../../init_firebase/firebase";
 import { collection, onSnapshot } from "firebase/firestore";
 import { addCRUD, deleteCRUD } from "../crud/Crud";
-import Button from "../interface/Button";
+import ButtonInt from "../interface/Button";
 import Container from "../interface/Container";
 
 const Stations = (props) => {
@@ -26,7 +26,7 @@ const Stations = (props) => {
     deleteCRUD(id, "stations");
   };
 
-  useEffect(() => {
+  useEffect(() => {// peticion de estaciones
     const unSuscribed = onSnapshot(collection(db, "stations"), (snapshot) => {
       const data = [];
       snapshot.forEach((doc) => {
@@ -43,19 +43,15 @@ const Stations = (props) => {
     <>
       <Stack direction="row" spacing={1}>
         <Container>
-          <Typography variant="h4" sx={{ margin: 1 }}>
+          <Typography variant="h5" sx={{ margin: 1 }}>
             Estaciones:
           </Typography>
 
-          <Button execute={(x) => setNewStation(x)}>Nueva Estacion</Button>
+          <ButtonInt execute={(x) => setNewStation(x)}>Nueva Estacion</ButtonInt>
 
           <Box sx={{ padding: 1, borderColor: "black", margin: 1 }}>
             {stations.map((station) => (
-              <Station
-                key={station.id}
-                station={station}
-                deleteStation={deleteStation}
-              ></Station>
+              <Station key={station.id} station={station} deleteStation={deleteStation}></Station>
             ))}
           </Box>
         </Container>

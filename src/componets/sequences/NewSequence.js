@@ -28,7 +28,7 @@ const NewSequence = (props) => {
   }, []);
 
   return (
-    <Box sx={{ width: 250, height: 582, backgroundColor: "#409197", borderRadius:3, padding: 1 }}>
+    <Box sx={{ width: 250, height: 150, backgroundColor: "#409197", borderRadius:3, padding: 1 }}>
 
 <form onSubmit={handleSubmit}>
         <FormGroup name="nueva_secuencia">

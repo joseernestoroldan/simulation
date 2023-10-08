@@ -1,4 +1,4 @@
-import { addDoc, collection, doc, deleteDoc } from "firebase/firestore";
+import { addDoc, collection, doc, deleteDoc,} from "firebase/firestore";
 
 import { db } from "../../init_firebase/firebase";
 
@@ -22,4 +22,5 @@ export const deleteCRUD = async (id, table) => {
      console.log(error);
    }
 };
+
 

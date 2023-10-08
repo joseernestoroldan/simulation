@@ -18,28 +18,15 @@ import { addCRUD } from "../crud/Crud";
 import { onSnapshot, collection } from "firebase/firestore";
 import { db } from "../../init_firebase/firebase";
 import ButtonInt from "../interface/Button";
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+import { MenuProps } from "./constants";
 
 const Sequences = () => {
-  const [newSequence, setNewSequence] = useState(false);
-  const [sequences, setSequences] = useState([]);
-  const [stations, setStations] = useState([]);
+  const [newSequence, setNewSequence] = useState(false); //toggle
+  const [sequences, setSequences] = useState([]); //almacena las secuencias existentes en la base de datos
+  const [stations, setStations] = useState([]);   //almacena las estaciones existentes en la base de datos
   const [sequence, setSequence] = useState("");
-  const [stationArray, setStationArray] = useState([]);
-  const [simulation, setSimulation] = useState([]);
-
-  console.log(simulation);
+  const [stationArray, setStationArray] = useState([]); //almacena las estaciones seleccionadas para una nueva simulacion
+  const [simulation, setSimulation] = useState([]); //almacena la simulacion
 
   const AddSequence = (nameSequence) => {
     const modelObject = {
@@ -61,25 +48,28 @@ const Sequences = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
     const arreglo = [];
     stationArray.map((item) => {
       stations.map((item_station) => {
         if (item === item_station.name) {
           arreglo.push(item_station);
         }
+        return null
       });
+      return null
     });
     console.log("este es mi arreglo:", arreglo);
+    setSimulation(arreglo)
   };
 
-  useEffect(() => {
-    //consulta de secuencias disponibles
+  useEffect(() => {//consulta de secuencias disponibles
     const unSuscribed = onSnapshot(collection(db, "sequences"), (snapshot) => {
       const data = [];
       snapshot.forEach((doc) => {
         data.push({ ...doc.data(), id: doc.id });
       });
-      console.log("Sequences:", data);
+    
       setSequences(data);
     });
     return () => {
@@ -87,8 +77,7 @@ const Sequences = () => {
     };
   }, []);
 
-  useEffect(() => {
-    //consulta de estaciones disponibles
+  useEffect(() => {//consulta de estaciones disponibles
     const unSuscribedStation = onSnapshot(
       collection(db, "stations"),
       (snapshot) => {
@@ -121,9 +110,7 @@ const Sequences = () => {
           <form onSubmit={handleSubmit}>
             <FormGroup>
               <FormControl sx={{ width: 230, margin: 1 }}>
-                <InputLabel id="demo-simple-select-label">
-                  Simulaciones
-                </InputLabel>
+                <InputLabel>Secuencias</InputLabel>
                 <Select
                   value={sequence}
                   label="Sequence"
@@ -140,7 +127,7 @@ const Sequences = () => {
               </FormControl>
               {/* ---------------------------------------------------------------------------- */}
               <FormControl sx={{ m: 1, width: 230 }}>
-                <InputLabel id="demo-multiple-chip-label">
+                <InputLabel>
                   Estaciones
                 </InputLabel>
                 <Select
@@ -148,7 +135,7 @@ const Sequences = () => {
                   value={stationArray}
                   onChange={handleChange}
                   input={
-                    <OutlinedInput id="select-multiple-chip" label="Chip" />
+                    <OutlinedInput/>
                   }
                   renderValue={(selected) => (
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>

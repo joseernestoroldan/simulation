@@ -8,7 +8,7 @@ const Container = (props) => {
         <Box
           sx={{
             width: 250,
-            height: 600,
+            height: 700,
             backgroundColor: "#6c3636",
             borderRadius: 3,
             borderColor: "red",

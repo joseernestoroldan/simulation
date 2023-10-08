@@ -22,7 +22,7 @@ const CheckBoxProcess = (props) => {
 
     console.log("updated object:", updatedObject)
 
-    const objectOfObjects = {};
+    const objectOfObjects = {};               /////crear el objeto
     for (const object of updatedObject) {
       objectOfObjects[object.name] = object;
     }
